@@ -1,0 +1,239 @@
+function _satellite () { 
+}
+_satellite.prototype = {
+     
+    track:function ()  {
+        //console.log("accessed");
+    },
+    pageBottom:function (newEmail)  {
+       // console.log("pb accessed");
+    }
+}
+_satellite = new _satellite(); 
+var adobeUtils = function() {
+var self = this;
+self.headerLinkType = "Header";
+self.headerFiberLinkType = "Header | Fiber";
+self.headerLinkPosition = "Top";
+self.footerLinkType = "Footer";
+self.footerFiberLinkType = "Footer | Fiber";
+self.footerLinkPosition = "Bottom";
+self.rechargeJourneySource = "Quick Pay";
+// self.adobeScriptUrl = "//assets.adobedtm.com/launch-ENbdc22e03bd374069afb00b655654ec5b-development.min.js"; // - development file
+self.adobeScriptUrl = "//assets.adobedtm.com/launch-EN9388be1e2731408184916028a1b31208.min.js"; // - production file
+self.isAdobeEnabled = (self.adobeScriptUrl && self.adobeScriptUrl !== 'null');
+self.linkTagManager = function(clickSource, params) {
+if (clickSource && clickSource === "HEADER_TOP" || clickSource && clickSource === "FOOTER_BOTTOM") {
+var adobeObj = {};
+adobeObj.link = new Object;
+adobeObj.link.linkName = params;
+adobeObj.link.linkType = clickSource === "HEADER_TOP" ? self.headerLinkType : self.footerLinkType;
+adobeObj.link.linkPosition = clickSource === "HEADER_TOP" ? self.headerLinkPosition : self.footerLinkPosition;
+self.invokeLinkTracking(adobeObj);
+} else if (clickSource && clickSource === "FIBER_TOP" || clickSource && clickSource === "FIBER_BOTTOM") {
+var adobeObj = {};
+adobeObj.link = new Object;
+adobeObj.link.linkName = params;
+adobeObj.link.linkType = clickSource === "FIBER_TOP" ? self.headerFiberLinkType : self.footerFiberLinkType;
+adobeObj.link.linkPosition = clickSource === "FIBER_TOP" ? self.headerLinkPosition : self.footerLinkPosition;
+self.invokeLinkTracking(adobeObj);
+} else if (clickSource && clickSource === "getNewSImGenerateOTP") {
+self.invokeNewSImGenerateOTP(params);
+} else if (clickSource && clickSource === "getNewSImResendOTP") {
+self.invokeNewSImResendOTP(params);
+} else if (clickSource && clickSource === "getNewSImSubmitOTP") {
+self.invokeNewSImSubmitOTP(params);
+} else if (clickSource && clickSource === "getNewSImBusinessType") {
+self.invokeNewSimBusinesstype(params);
+} else if (clickSource && clickSource === "getNewSImpincodeSubmit") {
+self.invokeNewSImpincodeSubmit(params);
+} else if (clickSource && clickSource === "getNewSimDelDate") {
+self.invokeNewSimDelDate(params);
+} else if (clickSource && clickSource === "getNewSimConfirm") {
+self.invokeNewSimConfirm(params);
+} else if (clickSource && clickSource === "getNewSimThankYou") {
+self.invokeNewSimThankYou(params);
+}
+};
+self.loadAdobeScript = function() {
+if (self.isAdobeEnabled) {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = self.adobeScriptUrl;
+//document.getElementsByTagName('head')[0].appendChild(script);
+}
+};
+self.invokeLinkTracking = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.link = obj.link;
+_satellite.track('linkTracking');
+}
+};
+self.invokeNewSImGenerateOTP = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+window.digitalData.link = obj.link;
+_satellite.track('getOTP');
+}
+};
+self.invokeNewSImResendOTP = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+window.digitalData.link = obj.link;
+_satellite.track('resendOTP');
+}
+};
+self.invokeNewSImSubmitOTP = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+window.digitalData.link = obj.link;
+_satellite.track('submitOTP');
+}
+};
+self.invokeNewSimBusinesstype = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+_satellite.track('getNewSImBusinessType');
+}
+};
+self.invokeNewSImpincodeSubmit = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+_satellite.track('getNewSImpincodeSubmit');
+}
+};
+self.invokeNewSimDelDate = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+_satellite.track('getNewSimDelDate');
+}
+};
+self.invokeNewSimConfirm = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+_satellite.track('getNewSimConfirm');
+}
+};
+self.invokeNewSimThankYou = function(obj) {
+if (self.isAdobeEnabled && typeof _satellite !== "undefined") {
+window.digitalData.journey = obj.journey;
+_satellite.track('getNewSimThankYou');
+}
+};
+};
+//Initialize Adobe
+var adobeScript = new adobeUtils();
+//load adobe
+adobeScript.loadAdobeScript();
+//adobeScript.linkTagManager("HEADER_TOP", "Plans");
+function bannerClick(pos, id, param) {
+handleAdobeTags(pos, id);
+window.location.href = param;
+}
+function handleAdobeTags(pos, id) {
+var obj = {
+promotionId: id,
+promotionPosition: pos
+};
+window.digitalData.internal = obj;
+_satellite.track('internalPromo');
+}
+function trackFormStart(formname) {
+var obj = {
+formName: formname
+};
+window.digitalData.form = obj;
+_satellite.track("formStart");
+}
+function trackFormComplete(formname) {
+var obj = {
+formName: formname
+};
+window.digitalData.form = obj;
+_satellite.track("formSubmit");
+}
+function trackSearchSuggestions(st, res) {
+var obj = {
+searchTerm: st,
+NumberSearchResults: res.content.length
+};
+window.digitalData.internal = obj;
+_satellite.track('internalSearch');
+}
+function trackNullSearchSuggestions(st) {
+var obj = {
+searchTerm: st,
+NumberSearchResults: 0
+};
+window.digitalData.internal = obj;
+_satellite.track('internalSearchNull');
+}
+function trackSearchSuggestionsClick(st, total) {
+var obj = {
+searchTerm: st,
+searchResultRank: '',
+NumberSearchResults: total
+};
+window.digitalData.internal = obj;
+_satellite.track('searchResultClicks');
+}
+function socialclicks(medium) {
+window.digitalData.socialPlatform = medium;
+_satellite.track('socialClicks');
+}
+function handleMasterNavAdobeTags(name) {
+window.digitalData.link.linkName = name;
+window.digitalData.link.linkType = "Business Vertical Selection";
+window.digitalData.link.linkPosition = "TOP";
+_satellite.track('linkTracking');
+}
+function customAdobeTracklinks(linkname, linktype, linkpos) {
+digitalData.link.linkName = linkname;
+digitalData.link.linkType = linktype;
+digitalData.link.linkPosition = linkpos;
+try {
+_satellite.track('linkTracking');
+} catch (e) {
+//console.log(e);
+}
+}
+function customAdobeTracksubmitNumber(journeytype, journeysrc, servicetype) {
+digitalData.journey[0].journeyType = journeytype;
+digitalData.journey[0].journeySource = journeysrc;
+digitalData.journey[0].serviceType = servicetype;
+try {
+_satellite.track('submitNumber');
+} catch (e) {
+//console.log(e);
+}
+}
+function customAdobeTrackRechargeNow(journeytype, journeysrc, servicetype, planid, planname, plancat, revenue, quantity) {
+digitalData.journey[0].planID = planid;
+digitalData.journey[0].journeyType = journeytype;
+digitalData.journey[0].journeySource = journeysrc;
+digitalData.journey[0].planCategory = plancat;
+digitalData.journey[0].packName = planname;
+digitalData.journey[0].quantity = "1";
+digitalData.journey[0].potentialRevenue = revenue;
+digitalData.journey[0].serviceType = servicetype;
+try {
+_satellite.track('rechargeCartAdd');
+//window.location.href = rechargeurl;
+} catch (e) {
+//console.log(e);
+}
+}
+function adobePlanViewButtonClick(journeyType, journeySource, planID, potentialRevenue, packName, quantity) {
+var planCategory = $(".navGrid .nav_list.nav-checked a").html().trim();
+digitalData.journey[0].journeyType = journeyType;
+digitalData.journey[0].journeySource = journeySource;
+digitalData.journey[0].planID = planID;
+digitalData.journey[0].potentialRevenue = potentialRevenue;
+digitalData.journey[0].planCategory = planCategory;
+digitalData.journey[0].packName = packName
+digitalData.journey[0].quantity = quantity;
+digitalData.journey[0].serviceType = "Mobile & JioFi";
+try {
+_satellite.track('planViewDetails');
+} catch (e) {}
+}
